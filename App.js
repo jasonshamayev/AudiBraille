@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, TouchableOpacity, Button, SafeAreaView} from 'r
 //import { Component } from 'react/cjs/react.production.min';
 //import quickstart from "./quickstart"
 //import submitToGoogle from "./vision"
-import config from './config';
+import * as Speech from 'expo-speech';
+import config from './node_modules/expo/expo-module.config.json';
 
 export default class App extends React.Component {
   
@@ -25,7 +26,21 @@ export default class App extends React.Component {
         </View>
       );
     }
-
+  //   async printValues(obj) {
+  //     for(var k in obj) {
+  //         if(obj[k] instanceof Object) {
+  //             printValues(obj[k]);
+  //         } else {
+  //             document.write(obj[k] + "<br>");
+  //         };
+  //     }
+  // };
+    async talk(text) {
+      const speak = () => {
+        const thingToSay = text;
+        Speech.speak(thingToSay);
+      }
+    }
     submitToGoogle = async () => {
       try {
         this.setState({ uploading: true });
@@ -66,9 +81,18 @@ export default class App extends React.Component {
           }
         );
         let responseJson = await response.json();
-
         const {responses} = responseJson
+        var text = responseJson.responses[0].fullTextAnnotation.text;
+        console.log(text)
+        const speak = () => {
+          const thingToSay = text;
+          Speech.speak(thingToSay);
+        }
+        speak();
         
+        //console.log(obj["responses"]["fullTextAnnotation"]["text"]);
+        //const {responses} = responseJson
+        //console.log(responseJson.responses.fullTextAnnotation.text)
         //console.log(responses.fullTextAnnotation);
         //console.log(responseJson);
         
