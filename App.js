@@ -25,6 +25,7 @@ export default class App extends React.Component {
         </View>
       );
     }
+
     submitToGoogle = async () => {
       try {
         this.setState({ uploading: true });
@@ -65,9 +66,10 @@ export default class App extends React.Component {
           }
         );
         let responseJson = await response.json();
+
         const {responses} = responseJson
         
-        console.log(responses.fullTextAnnotation);
+        //console.log(responses.fullTextAnnotation);
         //console.log(responseJson);
         
         //console.log(responseJson);
@@ -83,6 +85,7 @@ export default class App extends React.Component {
       }
     };
 }
+
 // function App() {
 //   const buttonClickedHandler = () => {
 //     console.log('button clicked');
