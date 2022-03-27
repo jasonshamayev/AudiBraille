@@ -6,6 +6,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Button, SafeAreaView} from 'r
 import * as Speech from 'expo-speech';
 import config from './node_modules/expo/expo-module.config.json';
 
+
 export default class App extends React.Component {
   
     state = {
@@ -26,15 +27,7 @@ export default class App extends React.Component {
         </View>
       );
     }
-  //   async printValues(obj) {
-  //     for(var k in obj) {
-  //         if(obj[k] instanceof Object) {
-  //             printValues(obj[k]);
-  //         } else {
-  //             document.write(obj[k] + "<br>");
-  //         };
-  //     }
-  // };
+
     async talk(text) {
       const speak = () => {
         const thingToSay = text;
@@ -70,7 +63,7 @@ export default class App extends React.Component {
         });
         let response = await fetch(
           'https://vision.googleapis.com/v1/images:annotate?key=' +
-            '',
+          process.env.API_KEY,
           {
             headers: {
               Accept: 'application/json',
@@ -90,16 +83,6 @@ export default class App extends React.Component {
         }
         speak();
         
-        //console.log(obj["responses"]["fullTextAnnotation"]["text"]);
-        //const {responses} = responseJson
-        //console.log(responseJson.responses.fullTextAnnotation.text)
-        //console.log(responses.fullTextAnnotation);
-        //console.log(responseJson);
-        
-        //console.log(responseJson);
-
-        //responseJson.parse("text");
-        //console.log(responseJson)
         this.setState({
           googleResponse: responseJson,
           uploading: false
