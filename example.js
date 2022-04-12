@@ -54,7 +54,7 @@ export default class App extends React.Component {
         });
         let response = await fetch(
           'https://vision.googleapis.com/v1/images:annotate?key=' +
-            'AIzaSyDxgMFEQP-YibkBU7kVxURH95FTkgYNqgs',
+            '',
           {
             headers: {
               Accept: 'application/json',
