@@ -55,20 +55,24 @@ export default class App extends React.Component {
     
     submitToGoogle = async () => {
       //let base64 = this.restCall();
-      const imgTransfer = await fetch(url, {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
+      const imgTransfer = await fetch("", {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
       const imageBlob = await imgTransfer.blob()
       var reader = new FileReader();
       reader.readAsDataURL(imageBlob);
-      reader.onloadend = () => {
+      reader.onloadend = async () => {
         base64data = reader.result;
         //console.log(base64data);
-      }
-      await base64data;
-      console.log(base64data) 
+      
+      //console.log('reader result',reader.result);
+      //await base64data;
+      console.log('line 67',base64data);
+      let base64encode = base64data.split('data:application/octet-stream;base64,')[1];
+      console.log('base64encode', base64encode);
+      //console.log(base64data) 
       //var base64 = this.restCall();
       //await base64;
-      //console.log(base64)
       console.log("waiting")
+      
     
       try {
         this.setState({ uploading: true });
@@ -92,14 +96,14 @@ export default class App extends React.Component {
                 /*source: {
                   imageUri: "gs://audibraille-vision/Kushal.jpg" // will use 'image.jpg' when running on pi
                 } */
-                content: base64data //will need a base64encoded string here 
+                content: base64encode //will need a base64encoded string here 
               }
             }
           ]
         });
         const response = await fetch(
           'https://vision.googleapis.com/v1/images:annotate?key=' +
-          API_KEY, //fill in with your API KEY
+          '', //fill in with your API KEY
           {
             headers: {
               Accept: 'application/json',
@@ -110,6 +114,7 @@ export default class App extends React.Component {
           }
         );
         let responseJson = await response.json();
+        console.log(responseJson);
         const {responses} = responseJson;
         console.log(responseJson);
         var text = responseJson.responses[0].fullTextAnnotation.text;
@@ -127,6 +132,7 @@ export default class App extends React.Component {
       } catch (error) {
         console.log(error);
       }
+    }
     }; 
 }
 
