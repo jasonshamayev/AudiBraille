@@ -2,6 +2,26 @@
 
 Make sure you have node.js installed when running this code https://nodejs.org/en/download/ you can install it here.
 
+USING EXPO
+Once you pull from github make sure you run:
+npm install
+this will install all the node modules you will need.
+Also make sure you have installed Expo by using:
+ npm install --global expo-cli
+ 
+ running should be as simple as using:
+ expo start
+ 
+ If there are any issues please reach out!
+ 
+ In the main code you will have to add an API key and put in the URL in the http request.
+ In the webserver code you will also need to hardcode your IP address at the moment and make sure the pi and your device are on the SAME network.
+ 
+ That should be all you need to get it to run in expo!
+
+
+
+NOT USING EXPO
 We will be using npm install to install all the node_modules needed to run the project. If you are running on a physical android device npx react-native run-android will be the command you will need to run.
 
 If you get an error try running adb reverse tcp:8081 tcp:8081
