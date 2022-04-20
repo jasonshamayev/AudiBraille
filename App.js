@@ -1,13 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, SafeAreaView} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button, SafeAreaView, ImageBackground} from 'react-native';
 //import { Component } from 'react/cjs/react.production.min';
 //import quickstart from "./quickstart"
 //import submitToGoogle from "./vision"
 import * as Speech from 'expo-speech';
 import config from './node_modules/expo/expo-module.config.json';
-import SliderNativeComponent from 'react-native/Libraries/Components/Slider/SliderNativeComponent'
+import FlatButton from './button';
 var base64data
 var url
+
+
 export default class App extends React.Component {
   
     state = {
@@ -19,13 +21,19 @@ export default class App extends React.Component {
       console.log('config', config);
 
       return (
-        <View style={styles.container}>
+        <ImageBackground source={require('./assets/Audibraille-logos_background.jpeg')} style={styles.background} >
+          <FlatButton text='Take Picture' onPress={() => this.submitToGoogle()} />
+        </ImageBackground>
+       
+          
+        
+        /*<View style={styles.container}>
           <TouchableOpacity
           onPress={() => this.submitToGoogle()}
           style={styles.button}>
             <Text>Click</Text>
           </TouchableOpacity>
-        </View>
+        </View> */
       );
     }
 
@@ -55,19 +63,20 @@ export default class App extends React.Component {
     
     submitToGoogle = async () => {
       //let base64 = this.restCall();
-      const imgTransfer = await fetch("", {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
+      console.log('button press works');
+      const imgTransfer = await fetch(url, {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
       const imageBlob = await imgTransfer.blob()
       var reader = new FileReader();
       reader.readAsDataURL(imageBlob);
       reader.onloadend = async () => {
         base64data = reader.result;
-        //console.log(base64data);
+        console.log(base64data);
       
       //console.log('reader result',reader.result);
       //await base64data;
-      console.log('line 67',base64data);
-      let base64encode = base64data.split('data:application/octet-stream;base64,')[1];
-      console.log('base64encode', base64encode);
+      //console.log('line 67',base64data);
+      let base64encode = base64data.split('data:application/octet-stream;base64,')[1]; //splits the first part of the base64encoded string that we don't need
+      //console.log('base64encode', base64encode);
       //console.log(base64data) 
       //var base64 = this.restCall();
       //await base64;
@@ -114,9 +123,9 @@ export default class App extends React.Component {
           }
         );
         let responseJson = await response.json();
-        console.log(responseJson);
+        //console.log(responseJson);
         const {responses} = responseJson;
-        console.log(responseJson);
+        //console.log(responseJson);
         var text = responseJson.responses[0].fullTextAnnotation.text;
         console.log(text);
         const speak = () => {
@@ -136,27 +145,6 @@ export default class App extends React.Component {
     }; 
 }
 
-// function App() {
-//   const buttonClickedHandler = () => {
-//     console.log('button clicked');
-//     //need to have camera take picture here
-//   };
-  
-  
-//     return (
-//           <View style={styles.container}>
-//             <TouchableOpacity 
-//               onPress={() => this.submitToGoogle('Kushal.jpg')}
-//               style = {styles.button}
-//               >
-//                 <Text> Click </Text>
-//               </TouchableOpacity>
-//           </View>      
-//     );
-//   } 
-
- //export default App;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -165,8 +153,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   button: {
-    height: 300,
-    marginTop: 200,
+    borderRadius: 8,
+    paddingVertical: 14,
+    paddingHorizontal: 10,
+    backgroundColor: '#f01d71',
   },
+  background: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  header: {
+    width: '100%',
+    height: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })
 
