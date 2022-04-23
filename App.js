@@ -37,6 +37,11 @@ export default class App extends React.Component {
       );
     }
 
+    getIPFromAmazon = async () => {
+      fetch("https://checkip.amazonaws.com/").then(res => res.text()).then(data => console.log(data))
+    }
+  
+
     async talk(text) {
       const speak = () => {
         const thingToSay = text;
@@ -62,22 +67,28 @@ export default class App extends React.Component {
     }
     
     submitToGoogle = async () => {
+      //console.log('ip',this.getIPFromAmazon());
       //let base64 = this.restCall();
-      console.log('button press works');
-      const imgTransfer = await fetch(url, {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
+      //console.log('button press works');
+      Speech.stop();
+      const imgTransfer = await fetch('', {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
       const imageBlob = await imgTransfer.blob()
       var reader = new FileReader();
       reader.readAsDataURL(imageBlob);
       reader.onloadend = async () => {
         base64data = reader.result;
-        console.log(base64data);
+        //console.log(base64data);
       
       //console.log('reader result',reader.result);
       //await base64data;
       //console.log('line 67',base64data);
-      let base64encode = base64data.split('data:application/octet-stream;base64,')[1]; //splits the first part of the base64encoded string that we don't need
+      //let base64IOSencode = base64data.split('data:image/jpeg;base64,')[1]; //splits the first part of the base64encoded string that we don't need
+      //let base64Androidencode = base64data.split('data:application/octet-stream;base64,')[1];
+      let base64encode = base64data.split(',')[1]; // will get the base64encoded string after the comma since the HTTP request can be different for each device.
       //console.log('base64encode', base64encode);
-      //console.log(base64data) 
+      //console.log('base64encode', base64encode);
+      //console.log(base64data)
+      //console.log('android', base64Androidencode);
       //var base64 = this.restCall();
       //await base64;
       console.log("waiting")
