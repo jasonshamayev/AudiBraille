@@ -40,6 +40,15 @@ export default class App extends React.Component {
     getIPFromAmazon = async () => {
       fetch("https://checkip.amazonaws.com/").then(res => res.text()).then(data => console.log(data))
     }
+
+    getIpClient = async () => {
+      var xhttp = new XMLHttpRequest();
+      xhttp.open("GET", "https://api.ipify.org", true);
+      xhttp.send();
+      var ip = xhttp.responseText;
+      console.log(ip);
+    }
+    
   
 
     async talk(text) {
