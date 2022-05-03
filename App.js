@@ -1,14 +1,20 @@
-import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Button, SafeAreaView, ImageBackground} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Button, SafeAreaView, ImageBackground, TextInput, KeyboardAvoidingView, ScrollView, Keyboard} from 'react-native';
 //import { Component } from 'react/cjs/react.production.min';
 //import quickstart from "./quickstart"
 //import submitToGoogle from "./vision"
 import * as Speech from 'expo-speech';
 import config from './node_modules/expo/expo-module.config.json';
 import FlatButton from './button';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import SelectDropdown, {SelectDropdownProps} from 'react-native-select-dropdown';
+var myLang = require('./languages.js');
+var lang = myLang.languages;
+var API_KEY = ''; //enter API KEY here
+let pickedLang = '';
 var base64data
 var url
-
+var ip
 
 export default class App extends React.Component {
   
@@ -16,15 +22,48 @@ export default class App extends React.Component {
       loading: false,
     };
     
+    
     render() {
+      let languages = Array.from(lang.keys());  //gets all languages and puts them in an array
+      //console.log(keys);
+      //const countries = ["Egypt", "Canada", "US"];
       console.log('Starting app')
       console.log('config', config);
 
       return (
         <ImageBackground source={require('./assets/Audibraille-logos_background.jpeg')} style={styles.background} >
+          <SelectDropdown 
+            data={languages}
+            defaultButtonText= "Choose a language"
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index)
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              // text represented after item is selected
+              // if data array is an array of objects then return selectedItem.property to render after item is selected
+              pickedLang = lang.get(selectedItem);
+              console.log(pickedLang);
+              return selectedItem
+            }}
+            rowTextForSelection={(item, index) => {
+              // text represented for each item in dropdown
+              // if data array is an array of objects then return item.property to represent item in dropdown
+              return item
+            }}
+          />   
           <FlatButton text='Take Picture' onPress={() => this.submitToGoogle()} />
+          <KeyboardAvoidingView enabled >
+          <View style={styles.circle}>
+          <Text style={styles.text}>Enter IP Address of pi:</Text>
+            <TextInput 
+            style={styles.input}
+            placeholder='e.g. 127.0.0.1'
+            //keyboardType='numeric'
+            onChangeText={(val) => ip=val}  />
+          </View>
+          </KeyboardAvoidingView>
         </ImageBackground>
-       
+
           
         
         /*<View style={styles.container}>
@@ -36,20 +75,6 @@ export default class App extends React.Component {
         </View> */
       );
     }
-
-    getIPFromAmazon = async () => {
-      fetch("https://checkip.amazonaws.com/").then(res => res.text()).then(data => console.log(data))
-    }
-
-    getIpClient = async () => {
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("GET", "https://api.ipify.org", true);
-      xhttp.send();
-      var ip = xhttp.responseText;
-      console.log(ip);
-    }
-    
-  
 
     async talk(text) {
       const speak = () => {
@@ -74,13 +99,37 @@ export default class App extends React.Component {
 
       
     }
+    //method that will do the text translation based on language the user picks
+    googleTranslate = async (text,lang) => {
+      const transResponse = await fetch('https://translation.googleapis.com/language/translate/v2?target=' + lang + '&key=' + API_KEY + '&q=' + text,
+      {
+        q: text, target: lang, key: API_KEY,
+        },
+        {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+      }
+    );
+    const tresponse = await transResponse.json();
+    var translation = tresponse.data.translations[0].translatedText;
+    console.log(translation);
+    return translation;
+
+    }
     
+    // this method calls the pi to take picture and then converts it to base64encoded string and sends it to the image text detection api from google. The text is then converted to speech.
     submitToGoogle = async () => {
       //console.log('ip',this.getIPFromAmazon());
       //let base64 = this.restCall();
       //console.log('button press works');
+      //console.log(ip);
+      url = 'http://' + ip + ':8080';
+      //console.log(url);
       Speech.stop();
-      const imgTransfer = await fetch('', {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
+      const imgTransfer = await fetch(url, {headers: { Accept: 'image/jpeg', 'Content-Type': 'image/jpeg'}}) //url is the webserver http call
       const imageBlob = await imgTransfer.blob()
       var reader = new FileReader();
       reader.readAsDataURL(imageBlob);
@@ -89,14 +138,10 @@ export default class App extends React.Component {
         //console.log(base64data);
       
       //console.log('reader result',reader.result);
-      //await base64data;
       //console.log('line 67',base64data);
       //let base64IOSencode = base64data.split('data:image/jpeg;base64,')[1]; //splits the first part of the base64encoded string that we don't need
       //let base64Androidencode = base64data.split('data:application/octet-stream;base64,')[1];
       let base64encode = base64data.split(',')[1]; // will get the base64encoded string after the comma since the HTTP request can be different for each device.
-      //console.log('base64encode', base64encode);
-      //console.log('base64encode', base64encode);
-      //console.log(base64data)
       //console.log('android', base64Androidencode);
       //var base64 = this.restCall();
       //await base64;
@@ -132,7 +177,7 @@ export default class App extends React.Component {
         });
         const response = await fetch(
           'https://vision.googleapis.com/v1/images:annotate?key=' +
-          '', //fill in with your API KEY
+          API_KEY, //fill in with your API KEY
           {
             headers: {
               Accept: 'application/json',
@@ -147,12 +192,38 @@ export default class App extends React.Component {
         const {responses} = responseJson;
         //console.log(responseJson);
         var text = responseJson.responses[0].fullTextAnnotation.text;
+        // if lang of text (get from the js) then just read it
+        // else do translation and send the translated text into speak call
+        
+        var locale = responseJson.responses[0].textAnnotations[0].locale;
         console.log(text);
+        console.log(locale);
+        
         const speak = () => {
           const thingToSay = text;
-          Speech.speak(thingToSay);
+          const options = {
+            language: pickedLang
+          }
+          Speech.speak(thingToSay, options);
         }
-        speak();
+        //console.log('locale', locale);
+        if(locale == pickedLang){
+          speak();
+          return; 
+        }
+        else{
+          var translation = this.googleTranslate(text, pickedLang);
+          console.log(translation);
+          /*const speakTranslation = () => {
+            const translationMsg = translation;
+            var options = {
+              language: pickedLang
+            } 
+            Speech.speak(translationMsg, options);
+          }
+          speakTranslation(); */
+        } 
+         
         
         this.setState({
           googleResponse: responseJson,
@@ -160,6 +231,11 @@ export default class App extends React.Component {
         }); 
       } catch (error) {
         console.log(error);
+        const speakError = () => {
+          const errorMessage = "Error with image, please try again";
+          Speech.speak(errorMessage);
+        }
+        speakError();
       }
     }
     }; 
@@ -191,6 +267,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#777',
+    padding: 8,
+    margin: 50,
+    width: 200,
+  },
+  circle: {
+    padding: 8,
+    borderRadius: 50,
+    borderWidth: 1,
+    borderColor: 'black',
+    height: 35,
+    marginBottom: 10,
+    alignItems: 'center'
+},
+  text: {
+    fontSize: 14,
+    color: '#2f354b',
+    textAlign: 'center'
   }
 })
 
