@@ -10,7 +10,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SelectDropdown, {SelectDropdownProps} from 'react-native-select-dropdown';
 var myLang = require('./languages.js');
 var lang = myLang.languages;
-var API_KEY = 'AIzaSyAkZNTMaaEqqKsw7Qa8MJddrrq2bHZYrYo'; //enter API KEY here
+var API_KEY = ''; //enter API KEY here
 let pickedLang = '';
 var base64data
 var url
@@ -120,7 +120,6 @@ export default class App extends React.Component {
     var translation = tresponse.data.translations[0].translatedText;
     console.log(translation);
     return translation;
-
     }
     
     // this method calls the pi to take picture and then converts it to base64encoded string and sends it to the image text detection api from google. The text is then converted to speech.
@@ -209,17 +208,15 @@ export default class App extends React.Component {
           }
           Speech.speak(thingToSay, options);
         }
-        if(pickedLang != '' || pickedLang != locale){
-          var translation = this.googleTranslate(text, pickedLang);
-          console.log(translation);
-          
-        }
+        
         //console.log('locale', locale);
         if(locale == pickedLang || pickedLang == ''){
           speak();
           return; 
         }
         else{
+          var translation = this.googleTranslate(text, pickedLang);
+          console.log(translation);
           const speakTranslation = () => {
             const translationMsg = translation;
             const options = {
@@ -227,7 +224,7 @@ export default class App extends React.Component {
             } 
             Speech.speak(translationMsg, options);
           }
-          speakTranslation(); 
+          //speakTranslation(); 
         } 
          
         
@@ -278,6 +275,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#777',
     padding: 10,
+
     margin: 50,
     width: 200,
   },

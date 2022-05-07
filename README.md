@@ -4,6 +4,8 @@ Code made by Jason Shamayev
 
 Make sure you have node.js installed when running this code https://nodejs.org/en/download/ you can install it here.
 
+You will need a raspberry pi with a camera module connected for this to work. In the webServer folder you will need to put camera.py and server.py in the same directory and have it run server.py on startup of the pi using systemd. I recommend running the pi in console mode only to save resources. Make sure to grab the ip address on the pi and save it somewhere as you will need it for later since the app is still in development!
+
 USING EXPO
 Once you pull from github make sure you run:
 npm install
@@ -30,6 +32,6 @@ Run the Python web server on your Pi and make sure it's in the same location as 
 
 Encode.py is a quick python code for getting an encoding base64 string that is needed for calling google API. if you want to test an image feel free to use that to get the base64 string or there is a function in App.js for it as well, feel free to mess around!
 
-BEFORE RUNNING: Please make sure you update the URL with your own HTTP request for your unique IP. You should put your IP in your HTTP server code on your pi for testing. Please also make sure you update API_KEY with an actual API key you have to run the Google vision API.
+BEFORE RUNNING: In the app it will ask for your ip address on the pi and place the ip you grabbed earlier. Please also make sure you update API_KEY with an actual API key you have to run the Google vision API.
 
 That should be all you need and if you have any questions please reach out to me!
