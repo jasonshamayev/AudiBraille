@@ -4,6 +4,8 @@ Code made by Jason Shamayev
 
 Make sure you have node.js installed when running this code https://nodejs.org/en/download/ you can install it here.
 
+Attached are CAD files for the frames and a case for the pi and battery pack. For the project a raspberry pi zero and pisugar battery were used and that is what the design specs for. The camera used is called zerocam for raspberry pi. Ideally the user will wear the headset and just have to press a button in the app to start taking a picture.
+
 You will need a raspberry pi with a camera module connected for this to work. In the webServer folder you will need to put camera.py and server.py in the same directory and have it run server.py on startup of the pi using systemd. I recommend running the pi in console mode only to save resources. Make sure to grab the ip address on the pi and save it somewhere as you will need it for later since the app is still in development!
 
 USING EXPO
