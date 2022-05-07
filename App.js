@@ -10,7 +10,7 @@ import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import SelectDropdown, {SelectDropdownProps} from 'react-native-select-dropdown';
 var myLang = require('./languages.js');
 var lang = myLang.languages;
-var API_KEY = ''; //enter API KEY here
+var API_KEY = 'AIzaSyAkZNTMaaEqqKsw7Qa8MJddrrq2bHZYrYo'; //enter API KEY here
 let pickedLang = '';
 var base64data
 var url
@@ -97,6 +97,9 @@ export default class App extends React.Component {
       return base64data;
       }
 
+    stopVoice = async () => {
+      Speech.stop();
+    }
       
     }
     //method that will do the text translation based on language the user picks
@@ -202,26 +205,29 @@ export default class App extends React.Component {
         const speak = () => {
           const thingToSay = text;
           const options = {
-            language: pickedLang
+            language: locale
           }
           Speech.speak(thingToSay, options);
         }
+        if(pickedLang != '' || pickedLang != locale){
+          var translation = this.googleTranslate(text, pickedLang);
+          console.log(translation);
+          
+        }
         //console.log('locale', locale);
-        if(locale == pickedLang){
+        if(locale == pickedLang || pickedLang == ''){
           speak();
           return; 
         }
         else{
-          var translation = this.googleTranslate(text, pickedLang);
-          console.log(translation);
-          /*const speakTranslation = () => {
+          const speakTranslation = () => {
             const translationMsg = translation;
-            var options = {
+            const options = {
               language: pickedLang
             } 
             Speech.speak(translationMsg, options);
           }
-          speakTranslation(); */
+          speakTranslation(); 
         } 
          
         
@@ -271,7 +277,7 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#777',
-    padding: 8,
+    padding: 10,
     margin: 50,
     width: 200,
   },
