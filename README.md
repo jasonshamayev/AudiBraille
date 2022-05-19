@@ -19,6 +19,8 @@ systemd and chrontab are recommended
 
 ## USING EXPO:
 
+On your phone make sure you have downloaded the Expo Go app and are connected to the same Wi-Fi as the raspberry pi is connected to.
+
 Once you pull from github make sure you run:
 
 npm install
