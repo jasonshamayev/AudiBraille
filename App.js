@@ -274,9 +274,10 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#777',
+    zIndex: 0,
     padding: 10,
-
-    margin: 50,
+    height: 40,
+    margin: 100,
     width: 200,
   },
   circle: {
