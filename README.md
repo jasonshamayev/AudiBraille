@@ -8,6 +8,8 @@ Make sure you have node.js installed when running this code https://nodejs.org/e
 
 Attached are CAD files for the frames and a case for the pi and battery pack. For the project a raspberry pi zero and pisugar battery were used and that is what the design specs for. The camera used is called zerocam for raspberry pi. Ideally the user will wear the headset and just have to press a button in the app to call the web server on the pi and start taking a picture.
 
+It is important that the pi and phone being used are connected to the SAME network as the image transfer is done via Wi-Fi so the web server on the pi will not work if they are not on the same network!
+
 ## GETTING STARTED WITH THE PI:
 
 You will need a raspberry pi with a camera module connected for this to work. In the webServer folder you will need to put camera.py and server.py in the same directory and have it run server.py on startup of the pi using systemd. I recommend running the pi in console mode only to save resources. Make sure to grab the ip address on the pi and save it somewhere as you will need it for later since the app is still in development! You will need to go to raspi-config settings and make sure the camera setting is ON for the camera to work. The code is in python so when running it make sure to use your version of python and ./server.py so for example if you have python3 (which is recommended) do python3 ./server.py to run the server.
