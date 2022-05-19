@@ -38,6 +38,10 @@ In the main code you will have to add an API key
 
 That should be all you need to get it to run in expo!
 
+To generate APK:
+
+https://medium.com/geekculture/react-native-generate-apk-debug-and-release-apk-4e9981a2ea51
+
 Encode.py (in webServer) is a quick python code for getting an encoding base64 string that is needed for calling google API. if you want to test an image feel free to use that to get the base64 string or there is a function in App.js for it as well, feel free to mess around!
 
 That should be all you need and if you have any questions please reach out to me!
