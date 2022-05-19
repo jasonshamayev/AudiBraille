@@ -10,9 +10,10 @@ Attached are CAD files for the frames and a case for the pi and battery pack. Fo
 
 ## GETTING STARTED WITH THE PI:
 
-You will need a raspberry pi with a camera module connected for this to work. In the webServer folder you will need to put camera.py and server.py in the same directory and have it run server.py on startup of the pi using systemd. I recommend running the pi in console mode only to save resources. Make sure to grab the ip address on the pi and save it somewhere as you will need it for later since the app is still in development! You will need to go to raspi-config settings and make sure the camera setting is ON for the camera to work. The code is in python so when running it make sure to use your version of python and ./server.py so for example if you have python3 (which is recommended) do python3 ./server.py to run the server and make sure to include the python3 in systemd.
+You will need a raspberry pi with a camera module connected for this to work. In the webServer folder you will need to put camera.py and server.py in the same directory and have it run server.py on startup of the pi using systemd. I recommend running the pi in console mode only to save resources. Make sure to grab the ip address on the pi and save it somewhere as you will need it for later since the app is still in development! You will need to go to raspi-config settings and make sure the camera setting is ON for the camera to work. The code is in python so when running it make sure to use your version of python and ./server.py so for example if you have python3 (which is recommended) do python3 ./server.py to run the server.
 
 Link for making a program run on startup: https://www.dexterindustries.com/howto/run-a-program-on-your-raspberry-pi-at-startup/
+systemd and chrontab are recommended
 
 ## USING EXPO:
 
