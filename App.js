@@ -119,7 +119,15 @@ export default class App extends React.Component {
     const tresponse = await transResponse.json();
     var translation = tresponse.data.translations[0].translatedText;
     console.log(translation);
-    return translation;
+    const speakTranslation = () => {
+      const translationMsg = translation;
+      const options = {
+        language: pickedLang
+      } 
+      Speech.speak(translationMsg, options);
+    }
+    speakTranslation(); 
+    //return translation;
     }
     
     // this method calls the pi to take picture and then converts it to base64encoded string and sends it to the image text detection api from google. The text is then converted to speech.
@@ -215,7 +223,8 @@ export default class App extends React.Component {
           return; 
         }
         else{
-          var translation = this.googleTranslate(text, pickedLang);
+          this.googleTranslate(text, pickedLang);
+          /*var translation = this.googleTranslate(text, pickedLang);
           console.log(translation);
           const speakTranslation = () => {
             const translationMsg = translation;
@@ -224,7 +233,7 @@ export default class App extends React.Component {
             } 
             Speech.speak(translationMsg, options);
           }
-          //speakTranslation(); 
+          //speakTranslation();  */
         } 
          
         
