@@ -18,10 +18,15 @@ systemd and chrontab are recommended
 ## USING EXPO:
 
 Once you pull from github make sure you run:
+
 npm install
+
 this will install all the node modules you will need.
+
 Also make sure you have installed Expo by using:
+
 npm install --global expo-cli
+
 if running on mac make sure to use sudo!
 
 running should be as simple as using:
