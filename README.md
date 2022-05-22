@@ -44,6 +44,13 @@ To generate APK:
 
 https://medium.com/geekculture/react-native-generate-apk-debug-and-release-apk-4e9981a2ea51
 
+To install APK:
+make sure an android device is plugged in and run:
+
+adb install full-path\AudiBraille\android\app\build\outputs\apk\debug\app-debug.apk
+
+the path should be where the generated APK was saved which should be in the release directory
+
 Encode.py (in webServer) is a quick python code for getting an encoding base64 string that is needed for calling google API. if you want to test an image feel free to use that to get the base64 string or there is a function in App.js for it as well, feel free to mess around!
 
 That should be all you need and if you have any questions please reach out to me!

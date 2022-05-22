@@ -52,16 +52,14 @@ export default class App extends React.Component {
             }}
           />   
           <FlatButton text='Take Picture' onPress={() => this.submitToGoogle()} />
-          <KeyboardAvoidingView enabled >
-          <View style={styles.circle}>
+          <View>
           <Text style={styles.text}>Enter IP Address of pi:</Text>
             <TextInput 
-            style={styles.input}
+            style={styles.input} 
             placeholder='e.g. 127.0.0.1'
             //keyboardType='numeric'
-            onChangeText={(val) => ip=val}  />
+            onChangeText={(val) => ip=val} />
           </View>
-          </KeyboardAvoidingView>
         </ImageBackground>
 
           
@@ -281,12 +279,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: '#777',
-    zIndex: 0,
-    padding: 10,
     height: 40,
-    margin: 100,
+    margin: 0,
     width: 200,
   },
   circle: {
@@ -294,13 +290,14 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     borderWidth: 1,
     borderColor: 'black',
-    height: 35,
+    height: 150,
     marginBottom: 10,
     alignItems: 'center'
 },
   text: {
     fontSize: 14,
-    color: '#2f354b',
+    margin: 0,
+    color: '#ffffff',
     textAlign: 'center'
   }
 })
